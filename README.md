@@ -3,7 +3,7 @@
 ## App Details:
 A database of hotel&room information relevent to the company who owns the hotels, can be used for internal data management or for customer searches.
 
-##Images:
+## Images:
 
 ![ERD]()
 
@@ -24,3 +24,6 @@ A database of hotel&room information relevent to the company who owns the hotels
 - *Amenities Table**:
 	- 1:Many with RoomAmenities- many rooms can have the same kind of amenity
 	**RoomAmenities facilitates a Many:Many relationship between Room & Amenities tables**
+
+## Architecture
+- Repository Pattern: Instead of allowing the controller files to have direct access to the database, control is filtered through an interface, and a service (repository). The interface defines methods that each model has to interact with the database, and then the services implement those methods and attach them to the controller. This allows the code to be 1) maintainable without having to redo excessive amounts of code, and 2) clean, readable, and up to standard with OOP principles of single responsibility. It also keeps the controller in accordance with the MVC design pattern by allowing it only to direct calls rather than make them itself.

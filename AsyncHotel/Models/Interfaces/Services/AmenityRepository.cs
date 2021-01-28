@@ -1,4 +1,5 @@
 ﻿using AsyncHotel.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,29 +15,40 @@ namespace AsyncHotel.Models.Interfaces.Services
         {
             _context = context;
         }
-        public Task<Amenity> Create(Amenity amenity)
+
+        public async Task<Amenity> Create(Amenity amenity)
         {
-            throw new NotImplementedException();
+            _context.Entry(amenity).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+
+            await _context.SaveChangesAsync();
+
+            return amenity;
         }
 
-        public Task DeleteAmenity(int ID)
+        public async Task DeleteAmenity(int ID)
         {
-            throw new NotImplementedException();
+            Amenity amenity = await GetAmenity(ID);
+            _context.Entry(amenity).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+            await _context.SaveChangesAsync();
         }
 
-        public Task<List<Amenity>> GetAmenities()
+        public async Task<List<Amenity>> GetAmenities()
         {
-            throw new NotImplementedException();
+            var amenities = await _context.Amenities.ToListAsync();
+            return amenities;
         }
 
-        public Task<Amenity> GetAmenity(int ID)
+        public async Task<Amenity> GetAmenity(int ID)
         {
-            throw new NotImplementedException();
+            Amenity amenity = await _context.Amenities.FindAsync(ID);
+            return amenity;
         }
 
-        public Task<Amenity> UpdateAmenity(int ID, Amenity amenity)
+        public async Task<Amenity> UpdateAmenity(int ID, Amenity amenity)
         {
-            throw new NotImplementedException();
+            _context.Entry(amenity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return amenity;
         }
     }
 }
