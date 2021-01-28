@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AsyncHotel.Data;
 using AsyncHotel.Models;
+using AsyncHotel.Models.Interfaces;
 
 namespace AsyncHotel.Controllers
 {
@@ -14,97 +15,66 @@ namespace AsyncHotel.Controllers
     [ApiController]
     public class BedroomsController : ControllerBase
     {
-        private readonly AsyncInnDBContext _context;
+        private readonly IRoom _room;
 
-        public BedroomsController(AsyncInnDBContext context)
+        public BedroomsController(IRoom room)
         {
-            _context = context;
+            _room = room;
         }
 
         // GET: api/Bedrooms
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Room>>> GetBedrooms()
+        public async Task<ActionResult<IEnumerable<Room>>> GetRooms()
         {
-            return await _context.Bedrooms.ToListAsync();
+            return Ok(await _room.GetRooms());
         }
 
         // GET: api/Bedrooms/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Room>> GetBedroom(int id)
+        public async Task<ActionResult<Room>> GetRoom(int id)
         {
-            var bedroom = await _context.Bedrooms.FindAsync(id);
+            var room = await _room.GetRoom(id);
 
-            if (bedroom == null)
+            if (room == null)
             {
                 return NotFound();
             }
 
-            return bedroom;
+            return room;
         }
 
         // PUT: api/Bedrooms/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBedroom(int id, Room bedroom)
+        public async Task<IActionResult> PutBedroom(int id, Room room)
         {
-            if (id != bedroom.ID)
+            if(id != room.ID)
             {
                 return BadRequest();
             }
 
-            _context.Entry(bedroom).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BedroomExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            var updatedRoom = await _room.UpdateRoom(id, room);
+            return Ok(updatedRoom);
         }
 
         // POST: api/Bedrooms
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Room>> PostBedroom(Room bedroom)
+        public async Task<ActionResult<Room>> PostBedroom(Room room)
         {
-            _context.Bedrooms.Add(bedroom);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetBedroom", new { id = bedroom.ID }, bedroom);
+            await _room.Create(room);
+            return CreatedAtAction("GetRoom", new { id = room.ID }, room);
         }
 
         // DELETE: api/Bedrooms/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Room>> DeleteBedroom(int id)
         {
-            var bedroom = await _context.Bedrooms.FindAsync(id);
-            if (bedroom == null)
-            {
-                return NotFound();
-            }
-
-            _context.Bedrooms.Remove(bedroom);
-            await _context.SaveChangesAsync();
-
-            return bedroom;
+            await _room.Delete(id);
+            return NoContent();
         }
 
-        private bool BedroomExists(int id)
-        {
-            return _context.Bedrooms.Any(e => e.ID == id);
-        }
     }
 }
