@@ -39,7 +39,7 @@ namespace AsyncHotel.Data
 
         public DbSet<Hotels> Hotels { get; set; }
 
-        public DbSet<Room> Bedrooms {get; set;}
+        public DbSet<Room> Rooms {get; set;}
 
         public DbSet<Amenity> Amenities { get; set; }
     }

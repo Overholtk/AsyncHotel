@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AsyncHotel.Models.Interfaces;
+using AsyncHotel.Models.Interfaces.Services;
 
 namespace AsyncHotel
 {
@@ -34,6 +36,10 @@ namespace AsyncHotel
                 string connectionString = Configuration.GetConnectionString("DefaultConnection");
                 options.UseSqlServer(connectionString);
             });
+
+            services.AddTransient<IRoom, RoomRepository>();
+            services.AddTransient<IHotels, HotelRepository>();
+            services.AddTransient<IAmenity, AmenityRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
