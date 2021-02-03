@@ -15,5 +15,8 @@ namespace AsyncHotel.Models
 
         public int Layout { get; set; }
 
+        //Navigation Properties:
+        public List<RoomAmenities> RoomAmenities { get; set; }
+
     }
 }

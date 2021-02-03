@@ -3,14 +3,16 @@ using AsyncHotel.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AsyncHotel.Migrations
 {
     [DbContext(typeof(AsyncInnDBContext))]
-    partial class HotelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210129080346_hotelRoom")]
+    partial class hotelRoom
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,19 +173,6 @@ namespace AsyncHotel.Migrations
                             Layout = 3,
                             Nickname = "Ancient Red Dragon"
                         });
-                });
-
-            modelBuilder.Entity("AsyncHotel.Models.RoomAmenities", b =>
-                {
-                    b.Property<int>("AmenitiesID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoomID")
-                        .HasColumnType("int");
-
-                    b.HasKey("AmenitiesID", "RoomID");
-
-                    b.ToTable("RoomAmenities");
                 });
 #pragma warning restore 612, 618
         }
