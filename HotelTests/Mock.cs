@@ -10,10 +10,10 @@ using Xunit;
 
 namespace HotelTests
 {
-    class Mock : IDisposable
+    public abstract class Mock : IDisposable
     {
         private readonly SqliteConnection _connection;
-        private readonly AsyncInnDBContext _db;
+        protected readonly AsyncInnDBContext _db;
 
         public Mock()
         {
