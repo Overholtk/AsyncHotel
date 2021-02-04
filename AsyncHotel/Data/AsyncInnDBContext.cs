@@ -37,7 +37,7 @@ namespace AsyncHotel.Data
             );
 
             modelBuilder.Entity<HotelRoom>().HasKey(
-                h => new { h.HotelID, h.RoomNumber }
+                h => new { h.HotelsID, h.RoomNumber }
             );
 
             modelBuilder.Entity<RoomAmenities>().HasKey(

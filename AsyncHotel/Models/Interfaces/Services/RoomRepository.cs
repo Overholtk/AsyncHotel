@@ -66,7 +66,7 @@ namespace AsyncHotel.Models.Interfaces.Services
 
         public async Task RemoveAmenityFromRoom(int roomID, int amenityID)
         {
-            var result = _context.RoomAmenities.FirstOrDefaultAsync(x => x.AmenityID == amenityID && x.RoomID == roomID);
+            var result = await _context.RoomAmenities.FirstOrDefaultAsync(x => x.AmenityID == amenityID && x.RoomID == roomID);
             _context.Entry(result).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
         }

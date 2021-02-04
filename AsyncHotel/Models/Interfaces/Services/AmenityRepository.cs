@@ -35,6 +35,7 @@ namespace AsyncHotel.Models.Interfaces.Services
         public async Task<List<Amenity>> GetAmenities()
         {
             var amenities = await _context.Amenities.ToListAsync();
+
             return amenities;
         }
 
