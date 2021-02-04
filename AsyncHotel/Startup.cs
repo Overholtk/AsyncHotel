@@ -12,6 +12,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AsyncHotel.Models.Interfaces;
 using AsyncHotel.Models.Interfaces.Services;
+using AsyncHotel.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace AsyncHotel
 {
@@ -41,6 +43,7 @@ namespace AsyncHotel
             services.AddTransient<IHotels, HotelRepository>();
             services.AddTransient<IAmenity, AmenityRepository>();
             services.AddTransient<IHotelRoom, HotelRoomRepository>();
+            services.AddTransient<IUserService, IdentityUSerService>();
 
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
@@ -55,7 +58,10 @@ namespace AsyncHotel
                 });
             });
 
-            
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

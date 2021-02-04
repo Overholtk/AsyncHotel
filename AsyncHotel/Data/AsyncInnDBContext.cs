@@ -1,4 +1,5 @@
 ﻿using AsyncHotel.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AsyncHotel.Data
 {
-    public class AsyncInnDBContext : DbContext
+    public class AsyncInnDBContext : IdentityDbContext<ApplicationUser>
     {
         public AsyncInnDBContext(DbContextOptions options) : base(options)
         {
@@ -15,8 +16,8 @@ namespace AsyncHotel.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // This calls the base method, but does nothing
-            // base.OnModelCreating(modelBuilder);
+            // Identity runs it's pre load work:
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Hotels>().HasData(
               new Hotels { ID = 1, Name = "The Glorious Accordian", StreetAddress = "246513 Street st", City = "Cityton", State = "New Statewise", Country = "Accordiantica", PhoneNumber = "5555555555"},
