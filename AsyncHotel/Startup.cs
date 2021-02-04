@@ -61,7 +61,8 @@ namespace AsyncHotel
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
-            });
+            })
+                .AddEntityFrameworkStores<AsyncInnDBContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
