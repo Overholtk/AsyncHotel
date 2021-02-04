@@ -54,7 +54,6 @@ namespace AsyncHotel.Models.Interfaces.Services
             return roomsList;
         }
 
-        //TODO: write this lol
         public async Task<HotelRoom> UpdateHotelRoom(int hotelID, int roomNumber, HotelRoom hotelRoom)
         {
             _context.Entry(hotelRoom).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
