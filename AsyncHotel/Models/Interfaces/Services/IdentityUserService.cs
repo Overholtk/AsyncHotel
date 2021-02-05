@@ -11,6 +11,7 @@ namespace AsyncHotel.Models.Interfaces.Services
     public class IdentityUserService : IUserService
     {
         private UserManager<ApplicationUser> _userManager;
+        private JwtTokenService tokenService;
 
         public IdentityUserService(UserManager<ApplicationUser> manager)
         {
