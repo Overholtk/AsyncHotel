@@ -30,5 +30,11 @@ namespace AsyncHotel.Models.Interfaces.Services
             var secretBytes = Encoding.UTF8.GetBytes(secret);
             return new SymmetricSecurityKey(secretBytes);
         }
+
+        //TODO: figure out what signInManager needs & finish method
+        public async Task<string> GetToken(ApplicationUser user, TimeSpan expiresIn)
+        {
+            var principal = await signInManager.CreateUserPrincipalAsync(user);
+        }
     }
 }
