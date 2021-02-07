@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AsyncHotel.Migrations
 {
-    public partial class reset : Migration
+    public partial class plswork : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
