@@ -1,4 +1,5 @@
 ﻿using AsyncHotel.Data;
+using AsyncHotel.Models.API;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,37 +16,63 @@ namespace AsyncHotel.Models.Interfaces.Services
         {
             _context = context;
         }
-        public async Task<Room> Create(Room room)
+        public async Task<Room> Create(RoomDTO incomingData)
         {
+            Room room = new Room
+            {
+                ID = incomingData.ID,
+                Nickname = incomingData.Name,
+                Layout = Int32.Parse(incomingData.Layout),
+            };
+
             _context.Entry(room).State = Microsoft.EntityFrameworkCore.EntityState.Added;
-
             await _context.SaveChangesAsync();
-
             return room;
         }
 
         public async Task Delete(int ID)
         {
-            Room room = await GetRoom(ID);
+            RoomDTO roomdto = await GetRoom(ID);
+            Room room = await _context.Rooms.FirstOrDefaultAsync(r => r.ID == roomdto.ID);
             _context.Entry(room).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
             await _context.SaveChangesAsync();
 
         }
 
-        public async Task<Room> GetRoom(int ID)
+        public async Task<RoomDTO> GetRoom(int ID)
         {
-            Room room = await _context.Rooms.FindAsync(ID);
-            var ames = await _context.RoomAmenities.Where(x => x.RoomID == ID).ToListAsync();
-            room.RoomAmenities = ames;
-            return room;
+            return await _context.Rooms
+                .Select(room => new RoomDTO
+                {
+                    ID = room.ID,
+                    Name = room.Nickname,
+                    Layout = room.Layout.ToString(),
+                    Amenities = room.RoomAmenities
+                    .Select(amenity => new AmenityDTO
+                    {
+                        ID = amenity.Amenity.ID,
+                        Name = amenity.Amenity.Name,
+                    }).ToList()
+
+                }).FirstOrDefaultAsync(r => r.ID == ID);
         }
 
         
-        public async Task<List<Room>> GetRooms()
+        public async Task<List<RoomDTO>> GetRooms()
         {
             var rooms = await _context.Rooms
-                                .Include(r => r.RoomAmenities)
-                                .ToListAsync();
+                .Select(room => new RoomDTO
+                {
+                    ID = room.ID,
+                    Name = room.Nickname,
+                    Layout = room.Layout.ToString(),
+                    Amenities = room.RoomAmenities
+                    .Select(am => new AmenityDTO
+                    {
+                        ID = am.Amenity.ID,
+                        Name = am.Amenity.Name,
+                    }).ToList()
+                }).ToListAsync();
             return rooms;
         }
 
