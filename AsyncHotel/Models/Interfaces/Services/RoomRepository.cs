@@ -35,12 +35,17 @@ namespace AsyncHotel.Models.Interfaces.Services
         public async Task<Room> GetRoom(int ID)
         {
             Room room = await _context.Rooms.FindAsync(ID);
+            var ames = await _context.RoomAmenities.Where(x => x.RoomID == ID).ToListAsync();
+            room.RoomAmenities = ames;
             return room;
         }
 
+        
         public async Task<List<Room>> GetRooms()
         {
-            var rooms = await _context.Rooms.ToListAsync();
+            var rooms = await _context.Rooms
+                                .Include(r => r.RoomAmenities)
+                                .ToListAsync();
             return rooms;
         }
 
@@ -49,6 +54,21 @@ namespace AsyncHotel.Models.Interfaces.Services
             _context.Entry(room).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             await _context.SaveChangesAsync();
             return room;
+        }
+
+        public async Task AddAmenityToRoom(int amenityID, int roomID)
+        {
+            RoomAmenities roomAmenities = new RoomAmenities() { AmenityID = amenityID, RoomID = roomID };
+
+            _context.Entry(roomAmenities).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task RemoveAmenityFromRoom(int roomID, int amenityID)
+        {
+            var result = await _context.RoomAmenities.FirstOrDefaultAsync(x => x.AmenityID == amenityID && x.RoomID == roomID);
+            _context.Entry(result).State = EntityState.Deleted;
+            await _context.SaveChangesAsync();
         }
     }
 }

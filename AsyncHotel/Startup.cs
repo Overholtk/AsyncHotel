@@ -12,6 +12,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AsyncHotel.Models.Interfaces;
 using AsyncHotel.Models.Interfaces.Services;
+using AsyncHotel.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace AsyncHotel
 {
@@ -40,6 +42,27 @@ namespace AsyncHotel
             services.AddTransient<IRoom, RoomRepository>();
             services.AddTransient<IHotels, HotelRepository>();
             services.AddTransient<IAmenity, AmenityRepository>();
+            services.AddTransient<IHotelRoom, HotelRoomRepository>();
+            services.AddTransient<IUserService, IdentityUserService>();
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo()
+                {
+                    Title = "AsyncInn",
+                    Version = "v1",
+                });
+            });
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+            })
+                .AddEntityFrameworkStores<AsyncInnDBContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

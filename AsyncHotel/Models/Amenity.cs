@@ -10,5 +10,8 @@ namespace AsyncHotel.Models
         public int ID { get; set; }
 
         public string Name { get; set; }
+
+        //Navigation Properties:
+        public List<RoomAmenities> RoomAmenities { get; set; }
     }
 }

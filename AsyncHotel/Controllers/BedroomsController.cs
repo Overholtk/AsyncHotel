@@ -76,5 +76,22 @@ namespace AsyncHotel.Controllers
             return NoContent();
         }
 
+        //POST: api/3/Amenity/2
+        [HttpPost("{roomID}/Amenity/{amenityID}")]
+        public async Task<IActionResult> AddAmenityToRoom(int roomID, int amenityID)
+        {
+            await _room.AddAmenityToRoom(roomID, amenityID);
+            return NoContent();
+        }
+
+        //DELETE: api/3/Amenity/2
+        [HttpDelete("{roomID}/Amenity/{amenityID}")]
+        public async Task<IActionResult> RemoveAmenityFromRoom(int roomID, int amenityID)
+        {
+            await _room.RemoveAmenityFromRoom(roomID, amenityID);
+            return NoContent();
+        }
+
+
     }
 }
