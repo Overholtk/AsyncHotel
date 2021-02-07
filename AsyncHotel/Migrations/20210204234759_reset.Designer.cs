@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AsyncHotel.Migrations
 {
     [DbContext(typeof(AsyncInnDBContext))]
-    [Migration("20210204070414_adding-identity")]
-    partial class addingidentity
+    [Migration("20210204234759_reset")]
+    partial class reset
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

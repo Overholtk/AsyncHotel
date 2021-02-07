@@ -14,6 +14,7 @@ using AsyncHotel.Models.Interfaces;
 using AsyncHotel.Models.Interfaces.Services;
 using AsyncHotel.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace AsyncHotel
 {
@@ -32,6 +33,21 @@ namespace AsyncHotel
         {
             services.AddMvc();
             services.AddControllers();
+
+            // Boilerplate:
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+              .AddJwtBearer(options =>
+              {
+                options.TokenValidationParameters = JwtTokenService.GetValidationParameters(Configuration);
+              });
+
+           
+
             services.AddDbContext<AsyncInnDBContext>(options =>
             {
                 // Our DATABASE_URL from js days
@@ -44,6 +60,7 @@ namespace AsyncHotel
             services.AddTransient<IAmenity, AmenityRepository>();
             services.AddTransient<IHotelRoom, HotelRoomRepository>();
             services.AddTransient<IUserService, IdentityUserService>();
+            services.AddScoped<JwtTokenService>();
 
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
@@ -75,6 +92,9 @@ namespace AsyncHotel
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -88,6 +108,7 @@ namespace AsyncHotel
                     throw new InvalidOperationException("Nope");
                 });
             });
+
         }
     }
 }

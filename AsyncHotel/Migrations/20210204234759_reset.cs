@@ -3,47 +3,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AsyncHotel.Migrations
 {
-    public partial class addingidentity : Migration
+    public partial class reset : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_RoomAmenities",
-                table: "RoomAmenities");
-
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_HotelRooms",
-                table: "HotelRooms");
-
-            migrationBuilder.DropColumn(
-                name: "AmenitiesID",
-                table: "RoomAmenities");
-
-            migrationBuilder.DropColumn(
-                name: "HotelID",
-                table: "HotelRooms");
-
-            migrationBuilder.AddColumn<int>(
-                name: "AmenityID",
-                table: "RoomAmenities",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddColumn<int>(
-                name: "HotelsID",
-                table: "HotelRooms",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_RoomAmenities",
-                table: "RoomAmenities",
-                columns: new[] { "AmenityID", "RoomID" });
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_HotelRooms",
-                table: "HotelRooms",
-                columns: new[] { "HotelsID", "RoomNumber" });
+            migrationBuilder.CreateTable(
+                name: "Amenities",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Amenities", x => x.ID);
+                });
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
@@ -82,6 +57,38 @@ namespace AsyncHotel.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Hotels",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    StreetAddress = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    State = table.Column<string>(nullable: true),
+                    Country = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Hotels", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Rooms",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nickname = table.Column<string>(nullable: false),
+                    Layout = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rooms", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -190,15 +197,86 @@ namespace AsyncHotel.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_RoomAmenities_RoomID",
-                table: "RoomAmenities",
-                column: "RoomID");
+            migrationBuilder.CreateTable(
+                name: "HotelRooms",
+                columns: table => new
+                {
+                    HotelsID = table.Column<int>(nullable: false),
+                    RoomNumber = table.Column<int>(nullable: false),
+                    RoomID = table.Column<int>(nullable: false),
+                    Rate = table.Column<float>(nullable: false),
+                    PetFriendly = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HotelRooms", x => new { x.HotelsID, x.RoomNumber });
+                    table.ForeignKey(
+                        name: "FK_HotelRooms_Hotels_HotelsID",
+                        column: x => x.HotelsID,
+                        principalTable: "Hotels",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_HotelRooms_Rooms_RoomID",
+                        column: x => x.RoomID,
+                        principalTable: "Rooms",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_HotelRooms_RoomID",
-                table: "HotelRooms",
-                column: "RoomID");
+            migrationBuilder.CreateTable(
+                name: "RoomAmenities",
+                columns: table => new
+                {
+                    AmenityID = table.Column<int>(nullable: false),
+                    RoomID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoomAmenities", x => new { x.AmenityID, x.RoomID });
+                    table.ForeignKey(
+                        name: "FK_RoomAmenities_Amenities_AmenityID",
+                        column: x => x.AmenityID,
+                        principalTable: "Amenities",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RoomAmenities_Rooms_RoomID",
+                        column: x => x.RoomID,
+                        principalTable: "Rooms",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Amenities",
+                columns: new[] { "ID", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Heated Bath" },
+                    { 2, "Oil Lamps" },
+                    { 3, "Crawling Claw Control" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Hotels",
+                columns: new[] { "ID", "City", "Country", "Name", "PhoneNumber", "State", "StreetAddress" },
+                values: new object[,]
+                {
+                    { 1, "Cityton", "Accordiantica", "The Glorious Accordian", "5555555555", "New Statewise", "246513 Street st" },
+                    { 2, "Cityton", "Accordiantica", "The Unarmed Crystal", "5555555555", "New Statewise", "4864513 Street st" },
+                    { 3, "Cityton", "Accordiantica", "Panoramic Goats Pub", "5555555555", "New Statewise", "2465489 Street st" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Rooms",
+                columns: new[] { "ID", "Layout", "Nickname" },
+                values: new object[,]
+                {
+                    { 1, 0, "The Underdark" },
+                    { 2, 1, "Dusty WereRat" },
+                    { 3, 3, "Ancient Red Dragon" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -239,57 +317,19 @@ namespace AsyncHotel.Migrations
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_HotelRooms_Hotels_HotelsID",
+            migrationBuilder.CreateIndex(
+                name: "IX_HotelRooms_RoomID",
                 table: "HotelRooms",
-                column: "HotelsID",
-                principalTable: "Hotels",
-                principalColumn: "ID",
-                onDelete: ReferentialAction.Cascade);
+                column: "RoomID");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_HotelRooms_Rooms_RoomID",
-                table: "HotelRooms",
-                column: "RoomID",
-                principalTable: "Rooms",
-                principalColumn: "ID",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_RoomAmenities_Amenities_AmenityID",
+            migrationBuilder.CreateIndex(
+                name: "IX_RoomAmenities_RoomID",
                 table: "RoomAmenities",
-                column: "AmenityID",
-                principalTable: "Amenities",
-                principalColumn: "ID",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_RoomAmenities_Rooms_RoomID",
-                table: "RoomAmenities",
-                column: "RoomID",
-                principalTable: "Rooms",
-                principalColumn: "ID",
-                onDelete: ReferentialAction.Cascade);
+                column: "RoomID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_HotelRooms_Hotels_HotelsID",
-                table: "HotelRooms");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_HotelRooms_Rooms_RoomID",
-                table: "HotelRooms");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_RoomAmenities_Amenities_AmenityID",
-                table: "RoomAmenities");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_RoomAmenities_Rooms_RoomID",
-                table: "RoomAmenities");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -306,58 +346,25 @@ namespace AsyncHotel.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "HotelRooms");
+
+            migrationBuilder.DropTable(
+                name: "RoomAmenities");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_RoomAmenities",
-                table: "RoomAmenities");
+            migrationBuilder.DropTable(
+                name: "Hotels");
 
-            migrationBuilder.DropIndex(
-                name: "IX_RoomAmenities_RoomID",
-                table: "RoomAmenities");
+            migrationBuilder.DropTable(
+                name: "Amenities");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_HotelRooms",
-                table: "HotelRooms");
-
-            migrationBuilder.DropIndex(
-                name: "IX_HotelRooms_RoomID",
-                table: "HotelRooms");
-
-            migrationBuilder.DropColumn(
-                name: "AmenityID",
-                table: "RoomAmenities");
-
-            migrationBuilder.DropColumn(
-                name: "HotelsID",
-                table: "HotelRooms");
-
-            migrationBuilder.AddColumn<int>(
-                name: "AmenitiesID",
-                table: "RoomAmenities",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddColumn<int>(
-                name: "HotelID",
-                table: "HotelRooms",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_RoomAmenities",
-                table: "RoomAmenities",
-                columns: new[] { "AmenitiesID", "RoomID" });
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_HotelRooms",
-                table: "HotelRooms",
-                columns: new[] { "HotelID", "RoomNumber" });
+            migrationBuilder.DropTable(
+                name: "Rooms");
         }
     }
 }
