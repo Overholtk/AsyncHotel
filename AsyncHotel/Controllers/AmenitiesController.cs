@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using AsyncHotel.Data;
 using AsyncHotel.Models;
 using AsyncHotel.Models.Interfaces;
-using AsyncHotel.Models.API;
 
 namespace AsyncHotel.Controllers
 {
@@ -25,20 +24,20 @@ namespace AsyncHotel.Controllers
 
         // GET: api/Amenities
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AmenityDTO>>> GetAmenities()
+        public async Task<ActionResult<IEnumerable<Amenity>>> GetAmenities()
         {
             return Ok(await _amenity.GetAmenities());
         }
 
         // GET: api/Amenities/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<AmenityDTO>> GetAmenity(int id)
+        public async Task<ActionResult<Amenity>> GetAmenity(int id)
         {
             var amenity = await _amenity.GetAmenity(id);
 
             if(amenity == null)
             {
-            return NotFound();
+                return NotFound();
             }
 
             return amenity;
@@ -63,7 +62,7 @@ namespace AsyncHotel.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Amenity>> PostAmenity(AmenityDTO amenity)
+        public async Task<ActionResult<Amenity>> PostAmenity(Amenity amenity)
         {
             await _amenity.Create(amenity);
             return CreatedAtAction("GetAmenity", new { id = amenity.ID }, amenity);
