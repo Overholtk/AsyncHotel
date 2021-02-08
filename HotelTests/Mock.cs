@@ -34,6 +34,7 @@ namespace HotelTests
             _connection?.Dispose();
         }
 
+        //Service 1: Amenity
         protected async Task<Amenity> CreateAndSaveTestAmenity()
         {
             var amenity = new Amenity { Name = "TestAmenity" };
@@ -44,6 +45,7 @@ namespace HotelTests
 
         }
 
+        //Service 2: Room
         protected async Task<Room> CreateAndSaveTestRoom(){
             var room = new Room{ Nickname = "Test", Layout = 2 };
             _db.Rooms.Add(room);
