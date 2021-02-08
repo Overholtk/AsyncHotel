@@ -22,14 +22,14 @@ namespace HotelTests
             //Assert
             var actualRoom = await repository.GetRoom(room.ID);
 
-            Assert.Contains(actualRoom.RoomAmenities, a => a.AmenityID == amenity.ID);
+            Assert.Contains(actualRoom.Amenities, a => a.ID == amenity.ID);
 
             //Act
             await repository.RemoveAmenityFromRoom(room.ID, amenity.ID);
 
             //Assert
             actualRoom = await repository.GetRoom(room.ID);
-            Assert.DoesNotContain(actualRoom.RoomAmenities, a => a.AmenityID == amenity.ID);
+            Assert.DoesNotContain(actualRoom.Amenities, a => a.ID == amenity.ID);
         }
     }
 }

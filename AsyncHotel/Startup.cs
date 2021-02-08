@@ -15,6 +15,7 @@ using AsyncHotel.Models.Interfaces.Services;
 using AsyncHotel.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
 
 namespace AsyncHotel
 {
@@ -68,9 +69,9 @@ namespace AsyncHotel
 
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo()
+                options.SwaggerDoc("v1", new OpenApiInfo()
                 {
-                    Title = "AsyncInn",
+                    Title = "Async Inn",
                     Version = "v1",
                 });
             });
@@ -91,6 +92,15 @@ namespace AsyncHotel
             }
 
             app.UseRouting();
+            app.UseSwagger(options =>
+            {
+                options.RouteTemplate = "/api/{documentName}/swagger.json";
+            });
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/api/v1/swagger.json", "Async Inn");
+                options.RoutePrefix = "";
+            });
 
             app.UseAuthentication();
             app.UseAuthorization();
