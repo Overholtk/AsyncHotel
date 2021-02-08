@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AsyncHotel.Models.API;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,14 +11,14 @@ namespace AsyncHotel.Models.Interfaces
         //CRUD Operations:
 
         //Create
-        Task<HotelRoom> Create(int hotelID, int roomNumber);
+        Task<HotelRoom> Create(int hotelID, int roomNumber, HotelRoomDTO incomingData);
 
         //Read
-        Task<HotelRoom> GetHotelRoom(int ID, int RoomNumber);
-        Task<List<HotelRoom>> GetHotelRooms(int ID);
+        Task<HotelRoomDTO> GetHotelRoom(int ID, int RoomNumber);
+        Task<List<HotelRoomDTO>> GetHotelRooms(int ID);
 
         //Update
-        Task<HotelRoom> UpdateHotelRoom(int hotelID, int roomNumber, HotelRoom hotelRoom);
+        Task<HotelRoom> UpdateHotelRoom(int hotelID, int roomNumber, HotelRoomDTO incomingData);
 
         //Delete
         Task Delete(int HotelID, int roomNumber);

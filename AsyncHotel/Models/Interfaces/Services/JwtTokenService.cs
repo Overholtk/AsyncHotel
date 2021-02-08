@@ -32,9 +32,9 @@ namespace AsyncHotel.Models.Interfaces.Services
         }
 
         //TODO: figure out what signInManager needs & finish method
-        public async Task<string> GetToken(ApplicationUser user, TimeSpan expiresIn)
-        {
-            var principal = await signInManager.CreateUserPrincipalAsync(user);
-        }
+        //public async Task<string> GetToken(ApplicationUser user, TimeSpan expiresIn)
+        //{
+            //var principal = await signInManager.CreateUserPrincipalAsync(user);
+        //}
     }
 }
