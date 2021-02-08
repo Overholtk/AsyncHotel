@@ -12,11 +12,20 @@ namespace AsyncHotel.Models.Interfaces.Services
     {
         private AsyncInnDBContext _context;
 
+        /// <summary>
+        /// sets context to database
+        /// </summary>
+        /// <param name="context"></param>
         public HotelRepository(AsyncInnDBContext context)
         {
             _context = context;
         }
 
+        /// <summary>
+        /// creates a new hotel
+        /// </summary>
+        /// <param name="hotel">inputted hotel data</param>
+        /// <returns>created hotel</returns>
         public async Task<Hotels> Create(Hotels hotel)
         {
             _context.Entry(hotel).State = Microsoft.EntityFrameworkCore.EntityState.Added;
@@ -26,6 +35,11 @@ namespace AsyncHotel.Models.Interfaces.Services
             return hotel;
         }
 
+        /// <summary>
+        /// deletes a hotel from the table
+        /// </summary>
+        /// <param name="ID">ID of the hotel to be deleted</param>
+        /// <returns></returns>
         public async Task DeleteHotel(int ID)
         {
             HotelsDTO hoteldto = await GetHotel(ID);
@@ -34,6 +48,11 @@ namespace AsyncHotel.Models.Interfaces.Services
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// get one hotel
+        /// </summary>
+        /// <param name="ID">ID of the hotel to retrieved</param>
+        /// <returns>DTO of the retrieved hotel</returns>
         public async Task<HotelsDTO> GetHotel(int ID)
         {
             return await _context.Hotels
@@ -61,6 +80,10 @@ namespace AsyncHotel.Models.Interfaces.Services
                 }).FirstOrDefaultAsync();
         }
 
+        /// <summary>
+        /// get all hotels
+        /// </summary>
+        /// <returns>a list of all hotel DTOs</returns>
         public async Task<List<HotelsDTO>> GetHotels()
         {
             return await _context.Hotels
@@ -88,6 +111,12 @@ namespace AsyncHotel.Models.Interfaces.Services
                 }).ToListAsync();
         }
 
+        /// <summary>
+        /// update a hotel data
+        /// </summary>
+        /// <param name="ID"> ID of the hotel to be udpated</param>
+        /// <param name="hotel"> new data </param>
+        /// <returns> the updated hotel data </returns>
         public async Task<Hotels> UpdateHotel(int ID, Hotels hotel)
         {
             _context.Entry(hotel).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
