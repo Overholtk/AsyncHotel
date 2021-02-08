@@ -6,6 +6,8 @@ A database of hotel&room information relevent to the company who owns the hotels
 Author: Kjell Overholt
 
 ##Getting Started
+To run the program in the browser: https://asynchotelapp.azurewebsites.net/
+
 Clone this repository to your local machine.
 
 
@@ -28,13 +30,13 @@ Then select and open AsyncHotel.sln
 
 **Usage**:
 Application Startup:
-![Startup]()
+![Startup](https://github.com/Overholtk/AsyncHotel/blob/master/Assets/use1.png)
 
 API call 1:
-![API example 1]()
+![API example 1](https://github.com/Overholtk/AsyncHotel/blob/master/Assets/use2.png)
 
 API call 2:
-![API example 2]()
+![API example 2](https://github.com/Overholtk/AsyncHotel/blob/master/Assets/use3.png)
 
 ![ERD](https://github.com/Overholtk/AsyncHotel/blob/master/Assets/AsyncInnERD.png)
 
