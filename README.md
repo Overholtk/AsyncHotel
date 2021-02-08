@@ -61,6 +61,9 @@ API call 2:
 ## Architecture
 - Repository Pattern: Instead of allowing the controller files to have direct access to the database, control is filtered through an interface, and a service (repository). The interface defines methods that each model has to interact with the database, and then the services implement those methods and attach them to the controller. This allows the code to be 1) maintainable without having to redo excessive amounts of code, and 2) clean, readable, and up to standard with OOP principles of single responsibility. It also keeps the controller in accordance with the MVC design pattern by allowing it only to direct calls rather than make them itself.
 
+## Identity:
+- allows users to create a login, we as developers can use that login to give or restrict access to pages and processes of our app. The identities are built by creating a table for them and a DTO for front facing access and easy data transfer. The user sets their username and password, and the username is saved to the databased while the password is hashed and stored securely. While the user is logged in they generate tokens that let the program know who they are, which allows them access to what they have permissions for.
+
 ## Routes: (Route/JSON return)
 Amenities Routes:
 - **api/Amenities**
