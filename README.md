@@ -3,7 +3,38 @@
 ## App Details:
 A database of hotel&room information relevent to the company who owns the hotels, can be used for internal data management or for customer searches.
 
+Author: Kjell Overholt
+
+##Getting Started
+Clone this repository to your local machine.
+
+
+`$ git clone [repo clone url here]`
+
+To run the program from Visual Studio:
+
+Select File -> Open -> Project/Solution
+
+
+Next navigate to the location you cloned the Repository.
+
+
+Double click on the AsyncHotel directory.
+
+
+Then select and open AsyncHotel.sln
+
 ## Images:
+
+**Usage**:
+Application Startup:
+![Startup]()
+
+API call 1:
+![API example 1]()
+
+API call 2:
+![API example 2]()
 
 ![ERD](https://github.com/Overholtk/AsyncHotel/blob/master/Assets/AsyncInnERD.png)
 
@@ -28,7 +59,7 @@ A database of hotel&room information relevent to the company who owns the hotels
 ## Architecture
 - Repository Pattern: Instead of allowing the controller files to have direct access to the database, control is filtered through an interface, and a service (repository). The interface defines methods that each model has to interact with the database, and then the services implement those methods and attach them to the controller. This allows the code to be 1) maintainable without having to redo excessive amounts of code, and 2) clean, readable, and up to standard with OOP principles of single responsibility. It also keeps the controller in accordance with the MVC design pattern by allowing it only to direct calls rather than make them itself.
 
-## Routes:
+## Routes: (Route/JSON return)
 Amenities Routes:
 - **api/Amenities**
   Returns a JSON block with all availible amenities
